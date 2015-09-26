@@ -1,0 +1,9 @@
+<ion-view view-title="Denominations">
+  <ion-content>
+    <ion-list>
+    <ion-toggle ng-repeat="denomination in denominations" ng-model="denomination.checked" ng-checked="denomination.checked" ng-change="denominationChanged(denomination)">
+        {{ denomination.name }}
+    </ion-toggle>
+    </ion-list>
+  </ion-content>
+</ion-view>

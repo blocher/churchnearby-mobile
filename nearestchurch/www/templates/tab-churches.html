@@ -1,0 +1,15 @@
+<ion-view view-title="Churches">
+  <ion-content>
+    <ion-list>
+   
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="church in churches" type="item-text-wrap" href="#/tab/churchs/{{church.id}}">
+        <img src="http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/black-inlay-crystal-clear-bubble-icons-culture/023488-black-inlay-crystal-clear-bubble-icon-culture-church.png">
+        <h2>{{ church.name }}</h2>
+        <p>{{church.address}}</p>
+        <p>{{church.city}}, {{church.state}} {{church.zip}}</p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>
+
+    </ion-list>
+  </ion-content>
+</ion-view>

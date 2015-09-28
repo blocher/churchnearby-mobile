@@ -48,7 +48,6 @@ angular.module('starter.controllers', [])
 
   function success(pos) {
     var crd = pos.coords;
-    console.log(crd);
     var newLatitude = parseFloat(crd.latitude).toFixed(4);
     var newLongitude = parseFloat(crd.longitude).toFixed(4);
     var currentLatitude = parseFloat(Settings.get('latitude')).toFixed(4);
@@ -91,7 +90,7 @@ angular.module('starter.controllers', [])
   //});
 
   $scope.$on('$ionicView.enter', function(e) {
-    if (Settings.get('changed')==1 || $scope.churches === undefined) {
+    if (Settings.get('changed')==1 || $scope.churches === undefined || 1==1) {
       $ionicLoading.show({
         content: 'Loading',
         animation: 'fade-in',
@@ -100,7 +99,7 @@ angular.module('starter.controllers', [])
         showDelay: 0
       });
       Churches.lookup().success(function(response){
-        $scope.churches = trustAsHtml(response.churches);
+        $scope.churches = response.churches;
         if (Settings.get('lookuptype') == 'current') {
           $scope.address = 'your current location of ' + Settings.get('address');
         } else {
@@ -110,6 +109,15 @@ angular.module('starter.controllers', [])
         Settings.set('changed',0);
         $ionicLoading.hide();
       });
+
+      var denominations_settings = Settings.get('denominations');
+      var denominations = [];
+      angular.forEach(denominations_settings, function(value, key) {
+        if (value.checked) {
+          denominations.push(value.name);
+        }
+      });
+      $scope.denominations = denominations.join(', ');
     }
 
   });

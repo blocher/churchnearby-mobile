@@ -25,6 +25,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   });
 })
 
+.filter('html',function($sce){
+    var div = document.createElement('div');
+    return function(input){
+        div.innerHTML = input;
+        return $sce.trustAsHtml(div.textContent);
+    }
+})
+
 .config(function(uiGmapGoogleMapApiProvider) {
     uiGmapGoogleMapApiProvider.configure({
         key: 'AIzaSyCprMSvCW_8gtwEROO-nM0MsEb_XVbi9Q0',

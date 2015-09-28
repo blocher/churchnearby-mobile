@@ -1,16 +1,53 @@
-<ion-view view-title="Lookup">
+<ion-view view-title="Search for Churches">
   
-   <ion-content>
-    <div  class="button button-calm button-full" ng-click="currentLocation()">
-      <i class="icon ion-navigate"></i> Look up your current location
-    </div>
+   <ion-content class="lookup_content">
 
-    <label class="item item-input">
-	  <span class="input-label">Address or Zip</span>
-	  <input type="text" ng-model="address_input">
-	</label>
-	 <div  class="button button-calm button-full" ng-click="otherLocation(address_input)">
-      <i class="icon ion-navigate"></i> Look up address
+    <div class="list card">
+
+        <div class="item item-avatar">
+          <img src="http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/black-inlay-crystal-clear-bubble-icons-culture/023488-black-inlay-crystal-clear-bubble-icon-culture-church.png">
+          <h2>Nearest Church</h2>
+          <p>Quickly find your nearest churches!</p>
+        </div>
+
+        <div class="item item-input-inset">
+          <button class="button button-block button-assertive" ng-click="currentLocation()">
+            <i class="icon ion-navigate"></i> Lookup You Current Location
+          </button>
+        </div>
+
+        <div class="item item-input-inset">
+          <label class="item-input-wrapper">
+            <input type="text" placeholder="Address or Zip" ng-model="address_input" required >
+          </label>
+          <button ng-disabled="signInForm.$invalid" class="button button-small button-assertive" ng-click="otherLocation(address_input)">
+            <i class="icon ion-earth"></i> Lookup
+          </button>
+        </div>
+
+
+<!--
+        <div class="item tabs tabs-secondary tabs-icon-left">
+          <a class="tab-item" href="#">
+            <i class="icon ion-thumbsup"></i>
+            Like
+          </a>
+          <a class="tab-item" href="#">
+            <i class="icon ion-chatbox"></i>
+            Comment
+          </a>
+          <a class="tab-item" href="#">
+            <i class="icon ion-share"></i>
+            Share
+          </a>
+        </div>
+-->
+      </div>
+
+      <div class="list">
+
+
+
     </div>
 
   </ion-content>

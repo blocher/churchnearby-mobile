@@ -1,4 +1,4 @@
-<ion-view view-title="Churches">
+<ion-view view-title="Search Results">
   <ion-content>
     <ion-list>
       <div class="card">
@@ -6,9 +6,15 @@
           Results near <b>{{ address }}</b>
         </div>
       </div>
+      <div class="card">
+        <div class="item item-text-wrap">
+          <p><b>Results for: </b>{{ denominations }}</p>
+          <!-- <p><small><a href="#/tab/churches">Change filters</a></small></p> -->
+        </div>
+      </div>
       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="church in churches" type="item-text-wrap" href="#/tab/churchs/{{church.id}}">
         <img src="http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/black-inlay-crystal-clear-bubble-icons-culture/023488-black-inlay-crystal-clear-bubble-icon-culture-church.png">
-        <h2>{{ church.name }}</h2>
+        <h2>{{ church.name|html }}</h2>
         <p>{{church.address}}</p>
         <p>{{church.city}}, {{church.state}} {{church.zip}}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>

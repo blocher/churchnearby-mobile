@@ -63,4 +63,48 @@ angular.module('starter.services', [])
 	   }
     },
   }
-}]);
+}])
+
+  .factory('AddressLookupSvc', [
+    '$q', '$http',
+    function($q, $http) {
+      //TODO: API KEY
+      var MAPS_ENDPOINT = 'http://maps.google.com/maps/api/geocode/json?{PARAMATER}&sensor=false';
+
+      return {
+        urlForReverseGeocode: function(lat, lng) {
+          return MAPS_ENDPOINT.replace('{PARAMATER}', 'latlng=' + lat + ',' + lng);
+        },
+
+        reverseGeocode: function(lat, lng) {
+          var deferred = $q.defer();
+          var url = this.urlForReverseGeocode(lat, lng);
+
+          $http.get(url).success(function(response) {
+            deferred.resolve(response.results);
+          }).error(deferred.reject);
+
+          return deferred.promise;
+        },
+
+        urlForGeocode: function(address) {
+          address = encodeURIComponent(address);
+          return MAPS_ENDPOINT.replace('{PARAMATER}', 'address=' + address);
+        },
+
+        geocode: function(address) {
+          var deferred = $q.defer();
+          var url = this.urlForGeocode(address);
+
+          $http.get(url).success(function(response) {
+            deferred.resolve(response.results);
+          }).error(deferred.reject);
+
+          return deferred.promise;
+        },
+
+
+
+      };
+    }
+  ]);

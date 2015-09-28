@@ -2,9 +2,8 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('LookupCtrl', function($scope, $state, $ionicLoading, Settings) {
+.controller('LookupCtrl', function($scope, $state, $ionicLoading, Settings, AddressLookupSvc) {
 
-  console.log(Settings.get('denominations'));
   $scope.currentLocation = function() {
 
       $ionicLoading.show({
@@ -14,9 +13,31 @@ angular.module('starter.controllers', [])
         maxWidth: 200,
         showDelay: 0
       });
-
+    Settings.set('lookuptype','current');
     navigator.geolocation.getCurrentPosition(success, error, options);
 
+  };
+
+  $scope.otherLocation = function(address_input) {
+      $ionicLoading.show({
+        content: 'Loading',
+        animation: 'fade-in',
+        showBackdrop: true,
+        maxWidth: 200,
+        showDelay: 0
+      });
+
+      Settings.set('lookuptype','other');
+      AddressLookupSvc.geocode(address_input).then(function(address) {
+        var pos = {};
+        pos.coords = address[0].geometry.location;
+        pos.coords.latitude = pos.coords.lat;
+        pos.coords.longitude = pos.coords.lng;
+        success(pos);
+      }, function(err) {
+        alert(err);
+        $scope.message = err;
+      });
   };
 
   var options = {
@@ -25,31 +46,36 @@ angular.module('starter.controllers', [])
       maximumAge: 0
     };
 
-    function success(pos) {
+  function success(pos) {
+    var crd = pos.coords;
+    console.log(crd);
+    var newLatitude = parseFloat(crd.latitude).toFixed(4);
+    var newLongitude = parseFloat(crd.longitude).toFixed(4);
+    var currentLatitude = parseFloat(Settings.get('latitude')).toFixed(4);
+    var currentLongitude = parseFloat(Settings.get('longitude')).toFixed(4);
+    
+    if (newLatitude != currentLatitude || newLongitude!=currentLongitude) {
+      Settings.set('changed',1);
+    } 
+    Settings.set('latitude',newLatitude);
+    Settings.set('longitude',newLongitude);
+    Settings.set('accuracy',crd.accuracy);
+    $ionicLoading.hide();
+    $state.go('tab.churches');
 
-      var crd = pos.coords;
-      var newLatitude = parseFloat(crd.latitude).toFixed(3);
-      var newLongitude = parseFloat(crd.longitude).toFixed(3);
-      var currentLatitude = parseFloat(Settings.get('latitude')).toFixed(3);
-      var currentLongitude = parseFloat(Settings.get('longitude')).toFixed(3);
-      
-      if (newLatitude != currentLatitude || newLongitude!=currentLongitude) {
-        Settings.set('changed',1);
-      } 
-      Settings.set('latitude',newLatitude);
-      Settings.set('longitude',newLongitude);
-      Settings.set('accuracy',crd.accuracy);
+    AddressLookupSvc.reverseGeocode(newLatitude,newLongitude).then(function(address) {
+      $scope.address = address;
+      Settings.set('address',address[0].formatted_address);
+    }, function(err) {
+      alert(err);
+      $scope.message = err;
+    });
+  };
 
-      $ionicLoading.hide();
-      $state.go('tab.churches');
-
-
-    };
-
-    function error(err) {
-      alert('We could not find your location.  Please try looking up an address instead.');
-      $ionicLoading.hide();
-    };
+  function error(err) {
+    alert('We could not find your location.  Please try looking up an address instead.');
+    $ionicLoading.hide();
+  };
 
     
 
@@ -74,20 +100,20 @@ angular.module('starter.controllers', [])
         showDelay: 0
       });
       Churches.lookup().success(function(response){
-        $scope.churches = response.churches;
+        $scope.churches = trustAsHtml(response.churches);
+        if (Settings.get('lookuptype') == 'current') {
+          $scope.address = 'your current location of ' + Settings.get('address');
+        } else {
+          $scope.address = Settings.get('address');
+        }
+        
         Settings.set('changed',0);
         $ionicLoading.hide();
       });
     }
 
-    console.log(Settings.get('denominations'));
-
   });
-  
-  
 
-    
-  
 })
 
 .controller('ChatDetailCtrl', function($scope, $q, $stateParams, Chats) {

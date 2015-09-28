@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'uiGmapgoogle-maps'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -23,6 +23,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
     
   });
+})
+
+.config(function(uiGmapGoogleMapApiProvider) {
+    uiGmapGoogleMapApiProvider.configure({
+        key: 'AIzaSyCprMSvCW_8gtwEROO-nM0MsEb_XVbi9Q0',
+        v: '3.3x', 
+        libraries: 'weather,geometry,visualization'
+    });
 })
 
 .config(function($stateProvider, $urlRouterProvider) {

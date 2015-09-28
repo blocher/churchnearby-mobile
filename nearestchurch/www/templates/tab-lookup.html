@@ -7,9 +7,9 @@
 
     <label class="item item-input">
 	  <span class="input-label">Address or Zip</span>
-	  <input type="text">
+	  <input type="text" ng-model="address_input">
 	</label>
-	 <div  class="button button-calm button-full" ng-click="currentLocation()">
+	 <div  class="button button-calm button-full" ng-click="otherLocation(address_input)">
       <i class="icon ion-navigate"></i> Look up address
     </div>
 

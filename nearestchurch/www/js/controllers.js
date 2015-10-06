@@ -2,7 +2,27 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('LookupCtrl', function($scope, $state, $ionicLoading, Settings, AddressLookupSvc) {
+.controller('LookupCtrl', function($scope, $state, $ionicLoading, Settings, AddressLookupSvc, Denominations) {
+
+    Denominations.all().success(function(response){
+        var denominations = response.denominations;
+        if (Settings.get('denominations') === undefined) {
+          angular.forEach(denominations, function(value, key) {
+            denominations[key].checked = true;
+          });
+        } else {
+          var denominations_settings = Settings.get('denominations');
+          angular.forEach(denominations_settings, function(value, key) {
+            angular.forEach(denominations, function(d_value, d_key) {
+              if (d_value.slug == value.slug) {
+                denominations[key].checked = denominations_settings[key].checked;
+              }
+            });
+          });
+        }
+        $scope.denominations = denominations;
+        Settings.set('denominations',denominations);
+    });
 
   $scope.currentLocation = function() {
 
@@ -80,7 +100,7 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('ChurchesCtrl', function($scope, Churches, $ionicLoading, Settings) {
+.controller('ChurchesCtrl', function($scope, Churches, $ionicLoading, Settings, $state, $timeout) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -90,7 +110,7 @@ angular.module('starter.controllers', [])
   //});
 
   $scope.$on('$ionicView.enter', function(e) {
-    if (Settings.get('changed')==1 || $scope.churches === undefined || 1==1) {
+    if (Settings.get('changed')==1 || $scope.churches === undefined) {
       $ionicLoading.show({
         content: 'Loading',
         animation: 'fade-in',
@@ -124,35 +144,22 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('ChatDetailCtrl', function($scope, $q, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
+.controller('ChurchDetailCtrl', function($scope, $q, $stateParams, Churches) {
+  $scope.$on('$ionicView.enter', function(e) {
+    Churches.get($stateParams.churchID).then(function(result) {
+         $scope.church = result.data.church;
+        }, function(err) {
+          alert(err);
+          $scope.message = err;
+        });
+  });
 })
 
 .controller('DenominationsCtrl', function($scope, Settings, Denominations) {
-  $scope.settings = {
-    enableFriends: true
-  };
 
-  Denominations.all().success(function(response){
-        var denominations = response.denominations;
-        if (Settings.get('denominations') === undefined) {
-          angular.forEach(denominations, function(value, key) {
-            denominations[key].checked = true;
-          });
-        } else {
-          var denominations_settings = Settings.get('denominations');
-          angular.forEach(denominations_settings, function(value, key) {
-            angular.forEach(denominations, function(d_value, d_key) {
-              if (d_value.slug == value.slug) {
-                denominations[key].checked = denominations_settings[key].checked;
-              }
-            });
-          });
-        }
-        $scope.denominations = denominations;
-        Settings.set('denominations',denominations);
-    });
 
+
+  $scope.denominations = Settings.get('denominations');
   $scope.denominationChanged = function(denomination) {
     var denominations = Settings.get('denominations');
     angular.forEach(denominations, function(value, key) {

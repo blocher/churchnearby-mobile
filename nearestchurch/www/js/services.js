@@ -5,10 +5,8 @@ angular.module('starter.services', [])
 
   var obj = {};
 
-  obj.all = function() {
-
-    return $http.get('http://nearestchurch.com/api/nearbyChurches?latitude=38.813778899999996&longitude=-77.1096117&denominations=');
-
+  obj.get = function(id) {
+     return $http.get('https://nearestchurch.com/api/church?id=' + id);
   }
 
   obj.lookup = function() {
@@ -23,7 +21,7 @@ angular.module('starter.services', [])
       }
     });
     denominations = denominations.join();
-    return $http.get('http://nearestchurch.com/api/nearbyChurches?latitude=' + latitude + '&longitude=' + longitude + '&denominations=' + denominations);
+    return $http.get('https://nearestchurch.com/api/nearbyChurches?latitude=' + latitude + '&longitude=' + longitude + '&denominations=' + denominations);
 
   }
   return obj;
@@ -36,7 +34,7 @@ angular.module('starter.services', [])
 
   obj.all = function() {
 
-    return $http.get('http://nearestchurch.com/api/denominations');
+    return $http.get('https://nearestchurch.com/api/denominations');
 
   }
   return obj;
@@ -69,7 +67,7 @@ angular.module('starter.services', [])
     '$q', '$http',
     function($q, $http) {
       //TODO: API KEY
-      var MAPS_ENDPOINT = 'http://maps.google.com/maps/api/geocode/json?{PARAMATER}&sensor=false';
+      var MAPS_ENDPOINT = 'https://maps.google.com/maps/api/geocode/json?{PARAMATER}&sensor=false';
 
       return {
         urlForReverseGeocode: function(lat, lng) {

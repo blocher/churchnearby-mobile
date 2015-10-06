@@ -12,8 +12,8 @@
           <!-- <p><small><a href="#/tab/churches">Change filters</a></small></p> -->
         </div>
       </div>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="church in churches" type="item-text-wrap" href="#/tab/churchs/{{church.id}}">
-        <img src="http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/black-inlay-crystal-clear-bubble-icons-culture/023488-black-inlay-crystal-clear-bubble-icon-culture-church.png">
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="church in churches" type="item-text-wrap" ui-sref="tab.chat-detail({ churchID: church.id })">
+        <img src="https://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/black-inlay-crystal-clear-bubble-icons-culture/023488-black-inlay-crystal-clear-bubble-icon-culture-church.png">
         <h2>{{ church.name|html }}</h2>
         <p>{{church.address}}</p>
         <p>{{church.city}}, {{church.state}} {{church.zip}}</p>

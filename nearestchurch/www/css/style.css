@@ -1,6 +1,10 @@
 /* Empty. Add your own CSS if you like */
 
 .lookup_content {
-	background-image: url("http://nearestchurch.com/img/cover/7.jpg");
+	background-image: url("https://nearestchurch.com/img/cover/7.jpg");
 	background-size: cover;
+}
+
+.platform-ios ion-content {
+	margin-top: 20px;
 }
